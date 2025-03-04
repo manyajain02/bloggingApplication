@@ -1,6 +1,8 @@
 package com.springboot.bloggingApp.controller;
 
+import com.springboot.bloggingApp.payloads.ApiResponse;
 import com.springboot.bloggingApp.payloads.PostDto;
+import com.springboot.bloggingApp.payloads.UserDto;
 import com.springboot.bloggingApp.services.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,11 +41,31 @@ public class PostController {
 
         return new ResponseEntity<List<PostDto>>(getPosts,HttpStatus.OK);
     }
+    @GetMapping("posts/{postId}")
+    public ResponseEntity<PostDto> getPostsId(@PathVariable Long postId) {
+
+         PostDto getPost = postsService.getPostById(postId);
+
+        return new ResponseEntity<PostDto>(getPost,HttpStatus.OK);
+    }
+
     @GetMapping("/posts")
     public ResponseEntity<List<PostDto>> getAllPosts() {
 
         List<PostDto> getPosts = postsService.getAllPosts();
 
         return new ResponseEntity<List<PostDto>>(getPosts,HttpStatus.OK);
+    }
+
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> updateUser(@RequestBody PostDto postDto, @PathVariable(name = "postId") Long postId) {
+        PostDto updatedUser = postsService.updatePost(postDto,postId);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable(name = "postId") Long postId) {
+        postsService.deletePost(postId);
+        return new ResponseEntity<>(new ApiResponse("Post deleted successfully", true), HttpStatus.OK);
     }
 }
