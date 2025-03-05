@@ -1,7 +1,7 @@
 package com.springboot.bloggingApp.services;
 
-import com.springboot.bloggingApp.entity.Post;
 import com.springboot.bloggingApp.payloads.PostDto;
+import com.springboot.bloggingApp.payloads.PostResponse;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ public interface PostsService {
 
     PostDto getPostById(Long PostId);
 
-    List<PostDto> getAllPosts();
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sorBy, String sortDir);
 
     List<PostDto> getPostsByCategory(Long categoryId);
 
     List<PostDto> getPostsByUser(Long userId);
 
-    PostDto serchPost(String keyword);
+   List<PostDto> searchPosts(String keyword);
 }
