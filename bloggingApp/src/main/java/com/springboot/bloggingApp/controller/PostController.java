@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class PostController {
 
     @Autowired
@@ -59,7 +59,7 @@ public class PostController {
         return new ResponseEntity<List<PostDto>>(getPosts, HttpStatus.OK);
     }
 
-    @GetMapping("posts/{postId}")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDto> getPostsId(@PathVariable Long postId) {
 
         PostDto getPost = postsService.getPostById(postId);
