@@ -28,12 +28,11 @@ public class UserDto {
     @Email(message = "Email address must be valid !!")
     private String email;
 
-    @NotEmpty
+//    @NotEmpty
     @Size(min = 3, max =  12, message = "Password must be minimum of 3 and maximum of 12 Characters")
-    @JsonIgnore
     private String password;
 
     private String about;
 
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleDto> roles = new HashSet<>();
 }

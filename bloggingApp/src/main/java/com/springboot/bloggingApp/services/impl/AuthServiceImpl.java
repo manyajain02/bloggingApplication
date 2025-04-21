@@ -3,7 +3,6 @@ package com.springboot.bloggingApp.services.impl;
 import com.springboot.bloggingApp.entity.User;
 import com.springboot.bloggingApp.exceptions.ResourceNotFoundException;
 import com.springboot.bloggingApp.exceptions.RuntimeConflictException;
-import com.springboot.bloggingApp.payloads.SignupDto;
 import com.springboot.bloggingApp.payloads.UserDto;
 import com.springboot.bloggingApp.repository.UserRepository;
 import com.springboot.bloggingApp.security.JwtService;
@@ -30,6 +29,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final UserServiceImpl userService;
+
     @Override
     public String[] login(String email, String password) {
        String[] tokens = new String[2];
@@ -49,18 +50,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDto Signup(SignupDto signupDto) {
-        User user = userRepository.findByEmail(signupDto.getEmail()).orElse(null);
+    public UserDto Signup(UserDto userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
         if (user!=null) {
-            throw new RuntimeConflictException("Cannot Signup, User already exists with email" + signupDto.getEmail());
+            throw new RuntimeConflictException("Cannot Signup, User already exists with email" + user.getEmail());
         }
-        User mappedUser =  modelMapper.map(signupDto,User.class);
+        //        User mappedUser =  modelMapper.map(userDto,User.class);
 //        mappedUser.setRoles(Set.of(Role.));
-        mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
-        User savedUser = userRepository.save(mappedUser);
+//        mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
+//        User savedUser = userRepository.save(mappedUser);
         //Creating user related entities
-
-        return modelMapper.map(savedUser, UserDto.class);
+//        return modelMapper.map(savedUser, UserDto.class);
+        return userService.registerNewUser(userDto);
     }
 
 

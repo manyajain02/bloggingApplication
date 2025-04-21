@@ -2,14 +2,13 @@ package com.springboot.bloggingApp.controller;
 
 import com.springboot.bloggingApp.payloads.LoginRequestDto;
 import com.springboot.bloggingApp.payloads.LoginResponseDto;
-import com.springboot.bloggingApp.payloads.SignupDto;
 import com.springboot.bloggingApp.payloads.UserDto;
 import com.springboot.bloggingApp.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AuthorizationServiceException;
@@ -39,9 +38,15 @@ public class AuthController
     }
 
 
-    @PostMapping("/signup")
-    ResponseEntity<UserDto> signUp(@RequestBody SignupDto signupDto) {
-        return new ResponseEntity<>(authService.Signup(signupDto), HttpStatus.CREATED);
+//    @PostMapping("/signup")
+//    ResponseEntity<UserDto> signUp(@RequestBody SignupDto signupDto) {
+//        return new ResponseEntity<>(authService.Signup(signupDto), HttpStatus.CREATED);
+//    }
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+    //        UserDto registeredUser = this.userService.registerNewUser(userDto);
+        return new ResponseEntity<>(authService.Signup(userDto), HttpStatus.CREATED);
+
     }
 
     @PostMapping("/refresh")
@@ -55,4 +60,5 @@ public class AuthController
 
         return ResponseEntity.ok(new LoginResponseDto(accessToken));
     }
+
 }
