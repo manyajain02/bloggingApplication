@@ -1,5 +1,7 @@
 package com.springboot.bloggingApp.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboot.bloggingApp.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +10,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +30,10 @@ public class UserDto {
 
     @NotEmpty
     @Size(min = 3, max =  12, message = "Password must be minimum of 3 and maximum of 12 Characters")
+    @JsonIgnore
     private String password;
 
     private String about;
+
+    private Set<Role> roles = new HashSet<>();
 }
