@@ -33,17 +33,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String[] login(String email, String password) {
-       String[] tokens = new String[2];
+        String[] tokens = new String[2];
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
             User user = (User) authentication.getPrincipal();
 
-            String accessToken =  jwtService.generateAccessToken(user);
+            String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             tokens[0] = accessToken;
             tokens[1] = refreshToken;
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             System.out.println("New Exception here in login" + exception);
         }
         return tokens;
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDto Signup(UserDto userDto) {
         User user = userRepository.findByEmail(userDto.getEmail()).orElse(null);
-        if (user!=null) {
+        if (user != null) {
             throw new RuntimeConflictException("Cannot Signup, User already exists with email" + user.getEmail());
         }
         //        User mappedUser =  modelMapper.map(userDto,User.class);
@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String refreshToken(String refreshToken) {
         Long userId = jwtService.getUserIdFromToken(refreshToken);
-        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("RefreshToken", "User Id", userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("RefreshToken", "User Id", userId));
 
         return jwtService.generateAccessToken(user);
     }
